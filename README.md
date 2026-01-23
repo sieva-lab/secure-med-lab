@@ -5,7 +5,7 @@
 [![Security](https://img.shields.io/badge/Security-OWASP%20Top%2010-red.svg)](#-security-implementation-details)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**SecureMed API** was developed as a self-study lab focused on Advanced .NET Security.
+**SecureMed API** is a self-study lab focused on Advanced .NET Security.
 It is a high-grade reference implementation for a secured API within the healthcare sector. 
 This project demonstrates how sensitive patient data can be safely stored and accessed using the latest .NET 10 features, with **Security by Design** as the core principle.
 
