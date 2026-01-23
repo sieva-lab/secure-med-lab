@@ -1,4 +1,4 @@
-# 🛡️ SecureMed API - .NET 10 Healthcare Reference Architecture
+# 🛡️ SecureMedLab API - .NET 10 Healthcare Reference Architecture
 
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![Aspire Orchestration](https://img.shields.io/badge/Orchestration-Aspire-green.svg)](https://learn.microsoft.com/en-us/dotnet/aspire/)
