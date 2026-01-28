@@ -1,4 +1,4 @@
-# 🛡️ SecureMed Ecosystem  Lab - Enterprise Healthcare Platform
+# 🛡️ SecureMed Lab - Enterprise Healthcare Platform
 
 This is a personal lab where I'm practicing how to build a secure healthcare system by connecting a .NET 10 API and Angular frontend to a SQL database and dbt pipeline, all running in Docker.
 
