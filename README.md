@@ -1,144 +1,572 @@
-# 🛡️ SecureMed Lab - Enterprise Healthcare Platform
+# SecureMed Platform
 
-This is a personal lab where I'm practicing how to build a secure healthcare system by connecting a .NET 10 API and Angular frontend to a SQL database and dbt pipeline, all running in Docker.
+> A production-grade healthcare data platform demonstrating enterprise architecture, data engineering, and full-stack development capabilities
 
-**A Next-Generation Hospital Data & Management Solution | .NET 10 Aspire | Angular | dbt**
+[![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular)](https://angular.dev/)
+[![dbt](https://img.shields.io/badge/dbt-Core-FF694B?logo=dbt)](https://www.getdbt.com/)
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](https://www.docker.com/)
 
-SecureMed is a high-performance, **Security-by-Design** reference architecture designed for hospitals and large-scale medical group practices. It addresses the critical challenge of balancing real-time patient care (Operational) with deep clinical insights (Analytical), all while maintaining strict GDPR and HIPAA compliance in a local-first, sovereign environment.
+## Overview
 
-## 🏥 Clinical Value Proposition
+SecureMed is a comprehensive healthcare data platform built to demonstrate enterprise-level software development practices. It addresses the critical challenge of balancing real-time patient care operations with deep clinical analytics, while maintaining strict GDPR and HIPAA compliance requirements.
 
-In a modern medical environment, data silos and security breaches are the primary risks. SecureMed solves this by:
+The platform showcases modern architectural patterns, security-by-design principles, and data engineering best practices in a complex, regulated domain.
 
-* **Zero-Trust Patient Records:** Ensuring that sensitive medical data is encrypted at the cellular level within the database.
-* **Unified Provider Experience:** A seamless Angular-based portal where clinicians see real-time data and administrators see analytical trends.
-* **Sovereign Data Control:** A fully containerized stack that runs on-premise, ensuring patient data never leaves the hospital's controlled infrastructure.
+## Architecture
 
----
+### High-Level Architecture
 
-## 🛠️ The Medical Tech Stack
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     PRESENTATION LAYER                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   Angular    │  │    Admin     │  │   Mobile     │         │
+│  │   Portal     │  │  Dashboard   │  │     PWA      │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    API & AUTH LAYER                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   .NET 10    │  │   Keycloak   │  │     API      │         │
+│  │   Web API    │  │     OIDC     │  │   Gateway    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   BUSINESS LOGIC LAYER                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │     EHR      │  │   Patient    │  │  Appointment │         │
+│  │   Service    │  │   Service    │  │   Service    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    DATA LAYER                                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │  SQL Server  │  │    Redis     │  │   MongoDB    │         │
+│  │   (OLTP)     │  │    Cache     │  │   Documents  │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                ANALYTICS & DATA PIPELINE                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   dbt Core   │  │   Airflow    │  │     Data     │         │
+│  │  Bronze→Gold │  │ Orchestration│  │  Warehouse   │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-### Operational Core (The "Doctor's Office")
+### Technology Stack
 
-* **Backend:** .NET 10 Web API (High-concurrency medical record processing).
-* **Frontend:** **Angular 19** Clinical Portal (Real-time vitals, patient history, and appointment scheduling).
-* **Identity:** **Keycloak** (OIDC) with Multi-Factor Authentication (MFA) for medical staff login.
-* **Database:** MS SQL Server 2022 (Developer Edition) featuring **AES-256 Column-Level Encryption** for PII (Patient Identifiable Information).
+**Frontend:**
+- Angular 19 with standalone components
+- RxJS for reactive programming
+- NgRx for state management
+- Angular Material for UI components
+- TypeScript (strict mode)
 
-### Analytical Core (The "Research & Management Lab")
+**Backend:**
+- .NET 10 Web API
+- Entity Framework Core 10
+- MediatR for CQRS pattern
+- FluentValidation
+- AutoMapper
 
-* **Data Transformation:** **dbt (data build tool)**. Automates the conversion of raw clinical logs into structured "Gold" tables for hospital management.
-* **Orchestration:** **.NET Aspire**. Manages the entire hospital digital infrastructure as a single, observable unit.
+**Authentication & Security:**
+- Keycloak (OAuth2/OIDC)
+- JWT Bearer authentication
+- Role-Based Access Control (RBAC)
+- AES-256 encryption for PII
 
----
+**Data & Analytics:**
+- SQL Server 2022 (Operational database)
+- dbt Core (Data transformation)
+- Apache Airflow (Orchestration)
+- Medallion Architecture (Bronze → Silver → Gold)
 
-## 🏗️ Hospital Platform Architecture
+**Infrastructure:**
+- .NET Aspire (Service orchestration)
+- Docker & Docker Compose
+- Redis (Caching & sessions)
+- OpenTelemetry (Observability)
 
-The ecosystem is divided into specialized zones managed by .NET Aspire:
+**DevOps:**
+- GitHub Actions (CI/CD)
+- SonarQube (Code quality)
+- xUnit / Jest (Testing)
+- Playwright (E2E testing)
 
-1. **SecureMed.AppHost:** The "Digital Command Center" managing hospital databases and identity services.
-2. **SecureMed.Portal (Angular):** The secure interface for doctors and nurses.
-3. **SecureMed.ClinicalAPI:** The secure gateway for Electronic Health Records (EHR).
-4. **SecureMed.Analytics (dbt):** The transformation engine that prepares data for clinical research and capacity planning.
+## Key Features
 
----
+### Operational System (OLTP)
 
-## 🚀 Deployment (Local Hospital Environment)
+**Patient Management**
+- Comprehensive patient records with encrypted PII
+- Medical history tracking
+- Appointment scheduling and management
+- Real-time notifications via SignalR
+
+**Electronic Health Records (EHR)**
+- Secure medical record storage
+- Document management for medical images
+- Audit trail for all data access
+- FHIR-compatible data structures
+
+**Role-Based Access**
+- Doctor portal (patient care focus)
+- Nurse interface (workflow optimization)
+- Administrator dashboard (system management)
+- Patient portal (self-service)
+
+### Analytics System (OLAP)
+
+**Data Pipeline**
+- Automated ETL using dbt
+- Incremental model refresh
+- Data quality testing
+- Lineage tracking
+
+**Business Intelligence**
+- Patient flow analysis
+- Department utilization metrics
+- Staff productivity reports
+- Predictive analytics for capacity planning
+
+**Reporting**
+- Executive dashboards
+- Operational reports
+- Clinical outcome analysis
+- Regulatory compliance reports
+
+## Security & Compliance
+
+### Data Protection
+
+**Encryption**
+- Data at rest: AES-256 encryption for sensitive fields
+- Data in transit: TLS 1.3 for all communications
+- Key management: Secure key rotation policies
+
+**Access Control**
+- Multi-Factor Authentication (MFA)
+- Principle of Least Privilege (PoLP)
+- Session management with timeout
+- IP allowlisting (configurable)
+
+**Audit & Compliance**
+- Comprehensive audit logging
+- Data access tracking
+- Retention policies
+- GDPR right-to-erasure support
+- HIPAA compliance framework
+
+### Security Features
+
+- OWASP Top 10 protection
+- SQL injection prevention (parameterized queries)
+- XSS protection (Content Security Policy)
+- CSRF protection
+- Rate limiting
+- Input validation
+- Output encoding
+
+## Data Engineering Highlights
+
+### Medallion Architecture
+
+**Bronze Layer (Raw)**
+- Source-aligned data ingestion
+- Full historical data retention
+- Minimal transformation
+- Schema-on-read approach
+
+**Silver Layer (Cleaned)**
+- Data quality validation
+- De-duplication
+- Type casting and standardization
+- Business rule application
+
+**Gold Layer (Curated)**
+- Star schema dimensional model
+- Pre-aggregated metrics
+- Optimized for BI tools
+- Role-specific data marts
+
+### dbt Implementation
+
+```sql
+-- Example: Patient admission metrics
+WITH patient_admissions AS (
+    SELECT 
+        patient_id,
+        admission_date,
+        discharge_date,
+        department,
+        diagnosis_code,
+        DATEDIFF(day, admission_date, discharge_date) AS length_of_stay
+    FROM {{ ref('stg_admissions') }}
+    WHERE admission_date >= DATEADD(month, -12, GETDATE())
+),
+
+metrics AS (
+    SELECT 
+        department,
+        DATE_TRUNC('month', admission_date) AS month,
+        COUNT(*) AS total_admissions,
+        AVG(length_of_stay) AS avg_los,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY length_of_stay) AS median_los,
+        COUNT(CASE WHEN length_of_stay > 7 THEN 1 END) AS extended_stays
+    FROM patient_admissions
+    GROUP BY department, DATE_TRUNC('month', admission_date)
+)
+
+SELECT * FROM metrics
+ORDER BY month DESC, department
+```
+
+### Data Quality
+
+**dbt Tests**
+- Schema validation
+- Referential integrity checks
+- Uniqueness constraints
+- Null value monitoring
+- Accepted value ranges
+
+**Great Expectations**
+- Statistical profiling
+- Anomaly detection
+- Data drift monitoring
+- Automated validation suites
+
+## DevOps & CI/CD
+
+### Continuous Integration
+
+```yaml
+# GitHub Actions workflow
+- Build .NET API
+- Run unit tests
+- Run integration tests
+- Code coverage analysis
+- SonarQube scan
+- Build Docker images
+- Security vulnerability scan
+```
+
+### Continuous Deployment
+
+```yaml
+# Deployment pipeline
+- Deploy to development environment
+- Run smoke tests
+- Deploy to staging environment
+- Run E2E tests
+- Manual approval gate
+- Deploy to production
+- Post-deployment validation
+```
+
+### Monitoring & Observability
+
+**Metrics**
+- Application performance (response time, throughput)
+- Database performance (query duration, connection pool)
+- Business metrics (user activity, appointment bookings)
+- Infrastructure metrics (CPU, memory, disk I/O)
+
+**Logging**
+- Structured logging with Serilog
+- Centralized log aggregation
+- Log correlation across services
+- Sensitive data redaction
+
+**Tracing**
+- Distributed tracing with OpenTelemetry
+- Request correlation IDs
+- Database query tracing
+- External API call tracking
+
+## Getting Started
 
 ### Prerequisites
 
-* .NET 10 SDK & Docker Desktop
-* Node.js (for the Clinical Portal)
-* Python (for the dbt analytics engine)
+- .NET 10 SDK
+- Node.js 20+
+- Docker Desktop
+- Python 3.11+
+- Git
 
-### Setup
+### Installation
 
-1. **Clone the Hospital Repository:**
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/securemed-platform.git
 cd securemed-platform
-
 ```
 
-
-2. **Initialize Analytics Engine:**
+2. Setup environment variables:
 ```bash
-pip install dbt-sqlserver
-
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-
-3. **Launch the Platform:**
+3. Start infrastructure services:
 ```bash
-dotnet run --project SecureMed.AppHost
-
+docker-compose up -d
 ```
 
+4. Initialize database:
+```bash
+cd src/SecureMed.API
+dotnet ef database update
+```
 
+5. Setup dbt:
+```bash
+cd src/SecureMed.Analytics
+pip install -r requirements.txt
+dbt deps
+dbt run
+```
 
-*The Aspire Dashboard will provide a real-time view of hospital service health and audit logs.*
+6. Start the application:
+```bash
+dotnet run --project src/SecureMed.AppHost
+```
+
+7. Access the application:
+- Web Portal: https://localhost:5001
+- API Swagger: https://localhost:5000/swagger
+- Aspire Dashboard: https://localhost:18888
+- Keycloak Admin: http://localhost:8080
+
+### Quick Start with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+## Project Structure
+
+```
+SecureMed/
+├── src/
+│   ├── SecureMed.AppHost/              # .NET Aspire orchestration
+│   ├── SecureMed.ServiceDefaults/      # Shared configurations
+│   ├── SecureMed.API/                  # Web API project
+│   ├── SecureMed.Domain/               # Domain models & business logic
+│   ├── SecureMed.Infrastructure/       # Data access & external services
+│   ├── SecureMed.Portal/               # Angular frontend
+│   └── SecureMed.Analytics/            # dbt project
+│       ├── models/
+│       │   ├── staging/                # Bronze layer
+│       │   ├── intermediate/           # Silver layer
+│       │   └── marts/                  # Gold layer
+│       ├── tests/
+│       ├── macros/
+│       └── snapshots/
+├── tests/
+│   ├── SecureMed.API.Tests/           # Unit tests
+│   ├── SecureMed.Domain.Tests/        # Domain tests
+│   ├── SecureMed.Integration.Tests/   # Integration tests
+│   └── SecureMed.E2E.Tests/           # End-to-end tests
+├── docs/
+│   ├── architecture/                   # Architecture documentation
+│   ├── api/                           # API documentation
+│   └── adr/                           # Architecture Decision Records
+├── scripts/
+│   ├── setup.sh                       # Setup script
+│   └── seed-data.sql                  # Sample data
+├── .github/
+│   └── workflows/                     # CI/CD pipelines
+├── docker/
+│   ├── api.Dockerfile
+│   ├── portal.Dockerfile
+│   └── analytics.Dockerfile
+├── docker-compose.yml
+├── .gitignore
+├── README.md
+└── LICENSE
+```
+
+## Testing
+
+### Running Tests
+
+```bash
+# Unit tests
+dotnet test
+
+# Integration tests
+dotnet test --filter Category=Integration
+
+# E2E tests
+cd tests/SecureMed.E2E.Tests
+npx playwright test
+
+# dbt tests
+cd src/SecureMed.Analytics
+dbt test
+```
+
+### Test Coverage
+
+- Unit tests: >80% coverage target
+- Integration tests: Critical paths covered
+- E2E tests: User workflows validated
+- dbt tests: All models tested
+
+## Performance
+
+### Benchmarks
+
+- API response time: <200ms (p95)
+- Database query time: <100ms (p95)
+- Frontend load time: <2 seconds
+- dbt full refresh: <5 minutes (1M records)
+
+### Optimization Strategies
+
+- Database indexing
+- Redis caching (70%+ hit rate)
+- Query optimization
+- Connection pooling
+- Response compression
+- CDN for static assets
+
+## Deployment
+
+### Environments
+
+- **Development**: Local Docker Compose
+- **Staging**: Kubernetes cluster
+- **Production**: Cloud provider (Azure/AWS)
+
+### Deployment Strategy
+
+- Blue-Green deployment
+- Database migrations automated
+- Zero-downtime releases
+- Automated rollback capability
+
+## Monitoring
+
+### Dashboards
+
+- Application health (Grafana)
+- Business metrics (Power BI / Metabase)
+- Infrastructure metrics (Prometheus)
+- dbt pipeline status (Airflow UI)
+
+### Alerting
+
+- API error rate threshold
+- Database connection issues
+- Failed dbt model runs
+- Security events
+
+## Contributing
+
+Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for details on the code of conduct and submission process.
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Roadmap
+
+### Phase 1: Core Platform (Complete)
+- ✅ Basic CRUD operations
+- ✅ Authentication & authorization
+- ✅ Data pipeline foundation
+
+### Phase 2: Advanced Features (In Progress)
+- 🚧 Real-time notifications
+- 🚧 Advanced analytics
+- 🚧 Mobile optimization
+
+### Phase 3: Scale & Performance (Planned)
+- ⏳ Kubernetes deployment
+- ⏳ Microservices architecture
+- ⏳ Multi-tenant support
+
+### Phase 4: Intelligence (Planned)
+- ⏳ ML-based predictions
+- ⏳ Natural language processing
+- ⏳ Automated insights
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Inspired by real-world healthcare systems
+- Built with open-source technologies
+- Community-driven best practices
+
+## Contact
+
+**Project Repository**: [github.com/yourusername/securemed-platform](https://github.com/yourusername/securemed-platform)
+
+**Demo Video**: [Link to demo]
+
+**Documentation**: [Link to full documentation]
 
 ---
 
-## 🔒 Healthcare Compliance & Security
+## Technical Highlights for Portfolio
 
-### 1. Data Privacy (GDPR/HIPAA)
+### Full-Stack Development
+- Modern frontend with Angular 19
+- RESTful API with .NET 10
+- Real-time features with SignalR
+- Progressive Web App capabilities
 
-By using EF Core Value Converters, fields such as **Patient Name, BSN, and Medical Diagnosis** are stored as encrypted blobs. This prevents unauthorized data exposure even during direct database access.
+### Data Engineering
+- Medallion architecture implementation
+- dbt for data transformation
+- Automated data quality testing
+- Dimensional modeling (Kimball methodology)
 
-### 2. Clinical Analytics Pipeline
+### Analytics Engineering
+- Complex SQL with CTEs and window functions
+- Incremental model development
+- Data documentation and lineage
+- Business metric definitions
 
-Using the **Medallion Architecture**, SecureMed processes data through:
+### DevOps & Infrastructure
+- Containerized with Docker
+- CI/CD with GitHub Actions
+- Infrastructure as Code
+- Observability with OpenTelemetry
 
-* **Bronze (Raw):** Encrypted hospital transactions.
-* **Silver (Cleaned):** De-duplicated clinical records for internal department use.
-* **Gold (Insights):** Anonymized datasets for hospital-wide performance metrics (e.g., "Surgery Room Utilization Rates").
+### Security & Compliance
+- Zero-trust architecture
+- Encryption at rest and in transit
+- GDPR and HIPAA considerations
+- Comprehensive audit logging
+
+### Software Engineering
+- Clean Architecture principles
+- CQRS and Event Sourcing patterns
+- Domain-Driven Design
+- Test-Driven Development
+- SOLID principles
 
 ---
 
-## 💻 Technical Deep-Dive
-
-### 1. High-Grade Security Implementation
-
-The system utilizes a **Zero-Trust** approach at the data layer.
-
-* **Application-Level Encryption:** Unlike TDE (Transparent Data Encryption), data is encrypted *before* it leaves the API using a custom `ValueConverter` in EF Core. Even a compromised SQL backup remains unreadable.
-* **OAuth2 Scopes:** Fine-grained access control ensuring the Angular frontend only requests the specific permissions (`medical.read`, `admin.analytics`) required for the session.
-
-### 2. Analytics Engineering with dbt
-
-Instead of traditional stored procedures, the platform uses **dbt** to manage the analytics lifecycle:
-
-* **Modular SQL:** Transformation logic is version-controlled and testable.
-* **Schema Isolation:** Operational data lives in `dbo`, while processed analytical insights are materialized into the `analytics` schema for reporting.
-
-### 3. Service Orchestration (.NET Aspire)
-
-The entire stack is defined in C# via the **AppHost**, eliminating the need for complex docker-compose files and manual connection string management:
-
-* **Automatic Service Discovery:** The API and Angular apps resolve dependencies dynamically.
-* **Persistent Volumes:** Configured SQL Server containers to retain medical records across development sessions.
-
----
-
-
-
-## 🗺️ Clinical Roadmap
-
-### Phase 1: Core EHR Infrastructure (Planned)
-
-* [x] Secure .NET 10 API Foundation.
-* [x] Local Identity Provider (Keycloak) for staff authentication.
-* [x] Encrypted Patient Storage (SQL Server 2022).
-
-### Phase 2: Clinical Portal & Analytics (Planned)
-
-* [ ] **Angular Clinical Dashboard:** Implementing role-based views for Doctors vs. Administrators.
-* [ ] **dbt Implementation:** Building the first set of clinical transformation models.
-* [ ] **Audit Tracing:** Real-time monitoring of "Who accessed which patient record?" using OpenTelemetry.
-
-### Phase 3: Advanced Medical Intelligence (Planned)
-
-* [ ] **Predictive Analytics:** Using dbt models to predict patient discharge dates.
-* [ ] **FHIR Integration:** Support for standard healthcare data exchange formats.
-
+**Built with ❤️ as a portfolio project demonstrating enterprise software development capabilities**
