@@ -1,6 +1,6 @@
 # SecureMed Platform
 
-> A production-grade healthcare data platform demonstrating enterprise architecture, data engineering, and full-stack development capabilities
+A personal lab to experiment and demonstrate architecture, data engineering, and full-stack development capabilities
 
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular)](https://angular.dev/)
