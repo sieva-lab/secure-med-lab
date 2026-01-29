@@ -1,0 +1,81 @@
+########################################
+## .NET / Visual Studio
+########################################
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.userosscache
+*.sln.doccache
+.vs/
+.vscode/
+*.userprefs
+appsettings.Development.json
+appsettings.Local.json
+# Aspire specifiek
+src/SecureMed.AppHost/bin/
+src/SecureMed.AppHost/obj/
+.astate/
+
+########################################
+## Angular / Node.js
+########################################
+src/SecureMed.Portal/node_modules/
+src/SecureMed.Portal/dist/
+src/SecureMed.Portal/.angular/
+src/SecureMed.Portal/www/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.nbtmp/
+
+########################################
+## Python / dbt / Airflow
+########################################
+# dbt artifacts
+src/SecureMed.Analytics/dbt_packages/
+src/SecureMed.Analytics/dbt_modules/
+src/SecureMed.Analytics/target/
+src/SecureMed.Analytics/logs/
+# Verberg je profielinstellingen (bevat vaak DB credentials)
+src/SecureMed.Analytics/profiles.yml
+
+# Python omgevingen
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# Airflow
+airflow/logs/
+airflow/airflow.db
+
+########################################
+## Docker & Infrastructure
+########################################
+.env
+!.env.example
+docker/data/
+# Als je lokale SQL Server data mount:
+sql_data/
+mssql_data/
+
+########################################
+## OS / IDE Diversen
+########################################
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*.bak
+*.tmp
+
+map_to_ignore
