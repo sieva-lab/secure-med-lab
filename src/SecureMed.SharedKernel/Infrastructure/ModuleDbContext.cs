@@ -1,0 +1,56 @@
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using SecureMed.SharedKernel.Domain;
+
+namespace SecureMed.SharedKernel.Infrastructure;
+
+public abstract class ModuleDbContext(DbContextOptions options, TimeProvider timeProvider) : DbContext(options)
+{
+    private static readonly MethodInfo s_setGlobalQueryForSoftDeleteMethod =
+        typeof(ModuleDbContext).GetMethod(nameof(SetGlobalQueryForSoftDelete), BindingFlags.NonPublic | BindingFlags.Static)!;
+
+    public abstract string Schema { get; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(optionsBuilder);
+        base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor(timeProvider));
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.HasDefaultSchema(Schema);
+        ConfigureSoftDeleteQueryFilters(modelBuilder);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.ApplyStronglyTypedIdEfConvertersFromAssembly(typeof(ModuleDbContext).Assembly);
+        base.ConfigureConventions(configurationBuilder);
+    }
+
+    /// <summary>
+    /// Configures global query filters to automatically exclude soft deleted entities.
+    /// </summary>
+    private void ConfigureSoftDeleteQueryFilters(ModelBuilder modelBuilder)
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
+            {
+                var method = s_setGlobalQueryForSoftDeleteMethod.MakeGenericMethod(entityType.ClrType);
+                method.Invoke(this, [modelBuilder]);
+            }
+        }
+    }
+
+    private static void SetGlobalQueryForSoftDelete<T>(ModelBuilder modelBuilder) where T : class, ISoftDelete
+    {
+        modelBuilder.Entity<T>().HasQueryFilter(Constants.SoftDeleteFilter, e => e.DeletedAt == null);
+    }
+}
