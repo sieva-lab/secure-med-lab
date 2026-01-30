@@ -1,4 +1,4 @@
-########################################
+﻿########################################
 ## .NET / Visual Studio
 ########################################
 bin/
@@ -17,7 +17,6 @@ appsettings.Local.json
 src/SecureMed.AppHost/bin/
 src/SecureMed.AppHost/obj/
 .astate/
-
 ########################################
 ## Angular / Node.js
 ########################################
@@ -31,7 +30,6 @@ yarn-debug.log*
 yarn-error.log*
 .eslintcache
 .nbtmp/
-
 ########################################
 ## Python / dbt / Airflow
 ########################################
@@ -42,7 +40,6 @@ src/SecureMed.Analytics/target/
 src/SecureMed.Analytics/logs/
 # Verberg je profielinstellingen (bevat vaak DB credentials)
 src/SecureMed.Analytics/profiles.yml
-
 # Python omgevingen
 venv/
 .venv/
@@ -52,11 +49,9 @@ __pycache__/
 *$py.class
 .pytest_cache/
 .mypy_cache/
-
 # Airflow
 airflow/logs/
 airflow/airflow.db
-
 ########################################
 ## Docker & Infrastructure
 ########################################
@@ -66,7 +61,6 @@ docker/data/
 # Als je lokale SQL Server data mount:
 sql_data/
 mssql_data/
-
 ########################################
 ## OS / IDE Diversen
 ########################################
@@ -76,5 +70,4 @@ desktop.ini
 .idea/
 *.swp
 *.bak
-
 map_to_ignore/
