@@ -1,0 +1,6 @@
+@SecureMed.ApiService_HostAddress = http://localhost:5284
+
+GET {{SecureMed.ApiService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -5,7 +5,6 @@ A personal lab to experiment and demonstrate architecture, data engineering, and
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular)](https://angular.dev/)
 [![dbt](https://img.shields.io/badge/dbt-Core-FF694B?logo=dbt)](https://www.getdbt.com/)
-[![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](https://www.docker.com/)
 
 ## Overview
@@ -49,7 +48,7 @@ The platform showcases modern architectural patterns, security-by-design princip
 ┌─────────────────────────────────────────────────────────────────┐
 │                    DATA LAYER                                   │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
-│  │  SQL Server  │  │    Redis     │  │   MongoDB    │         │
+│  │  PostgresDB  │  │    Redis     │  │   MongoDB    │         │
 │  │   (OLTP)     │  │    Cache     │  │   Documents  │         │
 │  └──────────────┘  └──────────────┘  └──────────────┘         │
 └─────────────────────────────────────────────────────────────────┘
@@ -87,7 +86,7 @@ The platform showcases modern architectural patterns, security-by-design princip
 - AES-256 encryption for PII
 
 **Data & Analytics:**
-- SQL Server 2022 (Operational database)
+- PostgresDB (Operational database)
 - dbt Core (Data transformation)
 - Apache Airflow (Orchestration)
 - Medallion Architecture (Bronze → Silver → Gold)
@@ -205,7 +204,7 @@ The platform showcases modern architectural patterns, security-by-design princip
 ```sql
 -- Example: Patient admission metrics
 WITH patient_admissions AS (
-    SELECT 
+    SELECT
         patient_id,
         admission_date,
         discharge_date,
@@ -217,7 +216,7 @@ WITH patient_admissions AS (
 ),
 
 metrics AS (
-    SELECT 
+    SELECT
         department,
         DATE_TRUNC('month', admission_date) AS month,
         COUNT(*) AS total_admissions,

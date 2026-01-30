@@ -1,0 +1,6 @@
+@SecureMed.Gateway_HostAddress = http://localhost:5167
+
+GET {{SecureMed.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SecureMed.ApiService/SecureMed.ApiService.csproj" />
+    <Project Path="src/SecureMed.AppHost/SecureMed.AppHost.csproj" />
+    <Project Path="src/SecureMed.Gateway/SecureMed.Gateway.csproj" />
+    <Project Path="src/SecureMed.ServiceDefaults/SecureMed.ServiceDefaults.csproj" />
+  </Folder>
+</Solution>
