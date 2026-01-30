@@ -116,14 +116,13 @@ postgres
 var database = postgres.AddDatabase("securemed-db");
 
 var redis = builder.AddRedis("cache")
-    .WithImage("redis", "8.2")
     .WithDataVolume();
 
 
-redis.WithEndpoint("tcp", e => {
-    e.UriScheme = "https"; // We dwingen het dashboard om SSL te verwachten
-    e.TargetPort = 6379;   // De poort waar Aspire zijn TLS-proxy op zet
-});
+// redis.WithEndpoint("tcp", e => {
+//     e.UriScheme = "https"; // We dwingen het dashboard om SSL te verwachten
+//     e.TargetPort = 6379;   // De poort waar Aspire zijn TLS-proxy op zet
+// });
 
 
 redis.WithRedisInsight(p => p.WithParentRelationship(redis))
