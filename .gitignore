@@ -76,6 +76,5 @@ desktop.ini
 .idea/
 *.swp
 *.bak
-*.tmp
 
-map_to_ignore
+map_to_ignore/
