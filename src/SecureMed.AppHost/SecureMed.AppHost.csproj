@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SecureMed.ApiService\SecureMed.ApiService.csproj" />
     <ProjectReference Include="..\SecureMed.Gateway\SecureMed.Gateway.csproj" />
+    <ProjectReference Include="..\SecureMed.Migrations\SecureMed.Migrations.csproj" />
   </ItemGroup>
 
 </Project>

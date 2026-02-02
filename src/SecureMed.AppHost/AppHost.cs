@@ -118,36 +118,29 @@ var database = postgres.AddDatabase("securemed-db");
 var redis = builder.AddRedis("cache")
     .WithDataVolume();
 
-
-// redis.WithEndpoint("tcp", e => {
-//     e.UriScheme = "https"; // We dwingen het dashboard om SSL te verwachten
-//     e.TargetPort = 6379;   // De poort waar Aspire zijn TLS-proxy op zet
-// });
-
-
 redis.WithRedisInsight(p => p.WithParentRelationship(redis))
     .WithRedisCommander(p => p.WithParentRelationship(redis));
 
-// var migrations = builder.AddProject<Projects.Sandbox_Migrations>("migrations")
-//     .WithReference(database)
-//     .WithReference(redis)
-//     .WaitFor(database)
-//     .WithParentRelationship(database);
+    var migrations = builder.AddProject<Projects.SecureMed_Migrations>("migrations")
+    .WithReference(database)
+    .WithReference(redis)
+    .WaitFor(database)
+    .WithParentRelationship(database);
 
-// if (builder.Environment.IsDevelopment())
-// {
-//     migrations.WithHttpCommand(path: "/reset-db", displayName: "Reset Database", commandOptions: new HttpCommandOptions
-//     {
-//         IconName = "DatabaseLightning",
-//         ConfirmationMessage = "Are you sure you want to reset the database?",
-//     });
+    if (builder.Environment.IsDevelopment())
+    {
+    migrations.WithHttpCommand(path: "/reset-db", displayName: "Reset Database", commandOptions: new HttpCommandOptions
+    {
+        IconName = "DatabaseLightning",
+        ConfirmationMessage = "Are you sure you want to reset the database?",
+    });
 
-//     migrations.WithHttpCommand(path: "/reseed-db", displayName: "Reseed Database", commandOptions: new HttpCommandOptions
-//     {
-//         IconName = "DatabaseLightning",
-//         ConfirmationMessage = "Are you sure you want to reseed the database?",
-//     });
-// }
+    migrations.WithHttpCommand(path: "/reseed-db", displayName: "Reseed Database", commandOptions: new HttpCommandOptions
+    {
+        IconName = "DatabaseLightning",
+        ConfirmationMessage = "Are you sure you want to reseed the database?",
+    });
+    }
 
 var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
     .WithHttpHealthCheck("/health")
