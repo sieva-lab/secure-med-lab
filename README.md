@@ -1,5 +1,5 @@
 # SecureMed Platform
-
+IN PROGRESS
 A personal lab to experiment and demonstrate architecture, data engineering, and full-stack development capabilities
 
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
@@ -473,26 +473,15 @@ dbt test
 - Failed dbt model runs
 - Security events
 
-## Contributing
-
-Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for details on the code of conduct and submission process.
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## Roadmap
 
-### Phase 1: Core Platform (Complete)
+### Phase 1: Core Platform (In Progress)
 - ✅ Basic CRUD operations
 - ✅ Authentication & authorization
 - ✅ Data pipeline foundation
 
-### Phase 2: Advanced Features (In Progress)
+### Phase 2: Advanced Features (Planned)
 - 🚧 Real-time notifications
 - 🚧 Advanced analytics
 - 🚧 Mobile optimization
@@ -527,7 +516,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## Technical Highlights for Portfolio
+## Technical Highlights
 
 ### Full-Stack Development
 - Modern frontend with Angular 19
@@ -566,6 +555,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Test-Driven Development
 - SOLID principles
 
----
 
-**Built with ❤️ as a portfolio project demonstrating enterprise software development capabilities**
