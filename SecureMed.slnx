@@ -7,5 +7,6 @@
     <Project Path="src/SecureMed.SharedKernel/SecureMed.SharedKernel.csproj" />
     <Project Path="src/SecureMed.Modules.PatientCare/SecureMed.Modules.PatientCare.csproj" />
     <Project Path="src/SecureMed.Modules.StaffManagement/SecureMed.Modules.StaffManagement.csproj" />
+    <Project Path="src/SecureMed.Migrations/SecureMed.Migrations.csproj" />
   </Folder>
 </Solution>

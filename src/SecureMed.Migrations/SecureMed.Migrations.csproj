@@ -14,7 +14,7 @@
     <ProjectReference
       Include="..\SecureMed.Modules.PatientCare\SecureMed.Modules.PatientCare.csproj" />
     <ProjectReference Include="..\SecureMed.ServiceDefaults\SecureMed.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\SecureMed.Shared.Kernel\SecureMed.Shared.Kernel.csproj" />
+    <ProjectReference Include="..\SecureMed.SharedKernel\SecureMed.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
