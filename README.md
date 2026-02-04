@@ -12,6 +12,7 @@ A personal lab to experiment and demonstrate architecture, data engineering, and
 SecureMed is a comprehensive healthcare data platform built to demonstrate enterprise-level software development practices. It addresses the critical challenge of balancing real-time patient care operations with deep clinical analytics, while maintaining strict GDPR and HIPAA compliance requirements.
 
 The platform showcases modern architectural patterns, security-by-design principles, and data engineering best practices in a complex, regulated domain.
+It was inspired by and built upon the architectural sandbox project of [Tim Deschryver](https://github.com/timdeschryver).
 
 ## Architecture
 
@@ -293,6 +294,7 @@ ORDER BY month DESC, department
 - Request correlation IDs
 - Database query tracing
 - External API call tracking
+
 
 ## Getting Started
 
