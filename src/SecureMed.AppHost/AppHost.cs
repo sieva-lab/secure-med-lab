@@ -7,6 +7,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // var openIDConnectSettingsClientSecret = builder.AddParameter("OpenIDConnectSettingsClientSecret", secret: true);
 // var keycloakAdminUsername = builder.AddParameter("KeycloakAdminUsername");
 // var keycloakAdminPassword = builder.AddParameter("KeycloakAdminPassword", secret: true);
+var encryptionKey = builder.AddParameter("EncryptionKey", secret: true);
 
 // var keycloak = builder.AddKeycloak("keycloak", adminUsername: keycloakAdminUsername, adminPassword: keycloakAdminPassword)
 //     .WithDataVolume()
@@ -122,6 +123,7 @@ redis.WithRedisInsight(p => p.WithParentRelationship(redis))
     .WithRedisCommander(p => p.WithParentRelationship(redis));
 
     var migrations = builder.AddProject<Projects.SecureMed_Migrations>("migrations")
+    .WithEnvironment("Encryption__Key", encryptionKey)
     .WithReference(database)
     .WithReference(redis)
     .WaitFor(database)
@@ -144,6 +146,7 @@ redis.WithRedisInsight(p => p.WithParentRelationship(redis))
 
 var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
     .WithHttpHealthCheck("/health")
+    .WithEnvironment("Encryption__Key", encryptionKey)
     .WithReference(database)
     // .WithReference(keycloak)
     .WithReference(redis)
@@ -154,7 +157,8 @@ var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
     .WithUrls(context =>
     {
         context.Urls.Clear();
-        context.Urls.Add(new() { Url = "/api-docs", DisplayText = "OpenAPI Specification", Endpoint = context.GetEndpoint("https") });
+        context.Urls.Add(new() { Url = "/scalar/v1", DisplayText = "OpenAI Specification", Endpoint = context.GetEndpoint("https") });
+        //context.Urls.Add(new() { Url = "/api-docs", DisplayText = "OpenAPI Specification", Endpoint = context.GetEndpoint("https") });
     });
 
 // var angularApplication = builder
@@ -189,7 +193,7 @@ var gateway = builder.AddProject<Projects.SecureMed_Gateway>("gateway")
     })
     .WithExternalHttpEndpoints();
 
-// apiService.WithParentRelationship(gateway);
+    apiService.WithParentRelationship(gateway);
 // angularApplication.WithParentRelationship(gateway);
 // keycloak.WithParentRelationship(gateway);
 

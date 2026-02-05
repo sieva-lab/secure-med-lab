@@ -7,6 +7,7 @@
     <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <UserSecretsId>3ca3dd2a-2596-4904-8265-d190a0ea22fb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

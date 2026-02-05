@@ -1,0 +1,101 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "SecureMed API Reference",
+    "description": "This is a sample API for the SecureMed project.",
+    "contact": {
+      "name": "Support",
+      "url": "https://github.com/timdeschryver/secure-med",
+      "email": "contact@timdeschryver.dev"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:7333"
+    }
+  ],
+  "paths": {
+    "/patients/{patientId}": {
+      "get": {
+        "tags": [
+          "Patient Care"
+        ],
+        "summary": "Query Handler: Get one patient by ID",
+        "description": "Get a specific patient by ID",
+        "operationId": "GetPatient",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PatientId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PatientId": { },
+      "Response": {
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "insz",
+          "createdAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/PatientId"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "insz": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Json Web Token"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Patient Care"
+    }
+  ]
+}

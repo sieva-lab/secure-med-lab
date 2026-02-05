@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SecureMed.Migrations;
 using SecureMed.Modules.PatientCare.Data;
 using SecureMed.ServiceDefaults;
+using SecureMed.SharedKernel;
 using SecureMed.SharedKernel.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +22,8 @@ builder.AddServiceDefaults();
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(DbInitializer.ActivitySourceName));
 
-// Todo: use sops for encryption key management
-builder.Services.AddSingleton<IEncryptionService>(new AesEncryptionService("JouwGeheimeSleutelVan32Tekens!"));
+
+builder.Services.AddEncryptionServices(builder.Configuration);
 
 // REGISTREER JOUW DB CONTEXT
 builder.Services.AddDbContext<PatientCareDbContext>(options =>
