@@ -8,12 +8,12 @@ namespace SecureMed.Modules.PatientCare.Handlers;
 
 
 // Partial class to enable source-generated logging
-public partial class PatientCreatedHandler
+public partial class PatientDeletedHandler
 {
 
     public async Task Handle(
-        PatientCreated message,
-        ILogger<PatientCreatedHandler> logger,
+        PatientDeleted message,
+        ILogger<PatientDeletedHandler> logger,
         [FromKeyedServices("PatientCare")] HybridCache cache,
         CancellationToken ct)
     {
@@ -22,18 +22,20 @@ public partial class PatientCreatedHandler
         ArgumentNullException.ThrowIfNull(cache);
 
         // 1. High-performance logging
-        LogPatientCreated(logger, message.Id, message.FirstName, message.LastName);
+        LogPatientDeleted(logger, message.Id, message.FirstName, message.LastName);
 
         // 2. Cache Invalidation
-        // We verwijderen de tag 'patients-list' zodat alle overzichten
-        // ververst worden bij de volgende opvraag.
+        // Remove the cache entry for the deleted patient, if it exists
+        await cache.RemoveAsync($"patient-{message.Id}", ct);
+
+        // Remove the tag 'patients-list' so that all patient lists are invalidated
         await cache.RemoveByTagAsync("patients-list", ct);
     }
 
     [LoggerMessage(
         Level = LogLevel.Information,
-        Message = "Patient {PatientId} created: {FirstName} {LastName}. Invaliding cache.")]
-    public static partial void LogPatientCreated(
+        Message = "Patient {PatientId} deleted: {FirstName} {LastName}. Invaliding cache.")]
+    public static partial void LogPatientDeleted(
         ILogger logger,
         PatientId patientId,
         string firstName,

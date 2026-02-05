@@ -1,6 +1,6 @@
 # SecureMed Platform
 IN PROGRESS
-A personal lab to experiment and demonstrate architecture, data engineering, and full-stack development capabilities
+A personal lab to learn and deepen architecture, data engineering, and full-stack development capabilities
 
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular)](https://angular.dev/)
@@ -9,9 +9,9 @@ A personal lab to experiment and demonstrate architecture, data engineering, and
 
 ## Overview
 
-SecureMed is a comprehensive healthcare data platform built to demonstrate enterprise-level software development practices. It addresses the critical challenge of balancing real-time patient care operations with deep clinical analytics, while maintaining strict GDPR and HIPAA compliance requirements.
+SecureMed is a healthcare data platform built to leearn enterprise-level software development practices. It addresses the critical challenge of balancing real-time patient care operations with deep clinical analytics, while maintaining strict GDPR and HIPAA compliance requirements.
 
-The platform showcases modern architectural patterns, security-by-design principles, and data engineering best practices in a complex, regulated domain.
+The platform uses modern architectural patterns, security-by-design principles, and data engineering best practices in a complex, regulated domain.
 It was inspired by and built upon the architectural sandbox project of [Tim Deschryver](https://github.com/timdeschryver).
 
 ## Architecture
@@ -168,15 +168,75 @@ It was inspired by and built upon the architectural sandbox project of [Tim Desc
 - GDPR right-to-erasure support
 - HIPAA compliance framework
 
-### Security Features
+### 🛡️ Security & Compliance
+
+Het SecureMed platform is ontworpen volgens de **OWASP Top 10 (2025)** standaarden en implementeert Defense-in-Depth op elk niveau van de stack.
 
 - OWASP Top 10 protection
-- SQL injection prevention (parameterized queries)
-- XSS protection (Content Security Policy)
-- CSRF protection
-- Rate limiting
-- Input validation
-- Output encoding
+https://owasp.org/Top10/2025/
+A01:2025 - Broken Access Control
+A02:2025 - Security Misconfiguration
+A03:2025 - Software Supply Chain Failures
+A04:2025 - Cryptographic Failures
+A05:2025 - Injection
+A06:2025 - Insecure Design
+A07:2025 - Authentication Failures
+A08:2025 - Software or Data Integrity Failures
+A09:2025 - Security Logging and Alerting Failures
+A10:2025 - Mishandling of Exceptional Conditions
+
+
+#### **1. Identity & Access Management (IAM)**
+
+*Focus op: A01 (Broken Access Control) & A07 (Authentication Failures)*
+
+* **Secure Authentication Flows:** Volledige OIDC/OAuth2 implementatie.
+* **MFA Integration:** Ondersteuning voor Multi-Factor Authentication via providers zoals Auth0 of Azure AD.
+* **Role-Based Access Control (RBAC):** Granulaire permissies per gebruikerstype (Doctor, Nurse, Admin).
+* **OAuth Scopes:** Beveiliging van API-resources op basis van scopes en claims.
+
+#### **2. Data Protection & Cryptography**
+
+*Focus op: A04 (Cryptographic Failures) & A08 (Software or Data Integrity Failures)*
+
+* **At-Rest Encryption:** AES-256 encryptie voor PII (zoals INSZ en patiëntnamen) via EF Core Converters.
+* **Searchable Hashing:** Implementatie van blind indexes voor performante, veilige lookups zonder decryptie.
+* **In-Transit Security:** Verplichte TLS 1.3 verbindingen voor alle service-to-service communicatie.
+
+#### **3. API & Infrastructure Security**
+
+*Focus op: A02 (Security Misconfiguration) & A05 (Injection)*
+
+* **SQL Injection Prevention:** Gebruik van Entity Framework Core en geparametriseerde queries.
+* **Secured API Endpoints:** * **Rate Limiting:** Bescherming tegen brute-force en DoS-aanvallen.
+* **Input Validation:** Strikte schema-validatie via FluentValidation.
+* **Output Encoding:** Voorkomen van data-lekken door alleen noodzakelijke DTO's (Thin Results) te exposen.
+
+
+* **API Keys & Secrets:** Veilig beheer via .NET User Secrets en Key Vaults.
+
+#### **4. Resilience & Proactive Defense**
+
+*Focus op: A03 (Supply Chain), A06 (Insecure Design), A09 (Logging) & A10 (Mishandling Conditions)*
+
+* **XSS & CSRF Protection:** Implementatie van Content Security Policy (CSP) en Anti-forgery tokens.
+* **Security Logging & Alerting:** Gestructureerde logging via Serilog met automatische redactie van gevoelige velden.
+* **Exceptional Condition Handling:** Centrale foutafhandeling die geen stacktraces lekt naar de client.
+* **Software Supply Chain:** Automatische scans op kwetsbaarheden in NuGet-pakketten via GitHub Actions.
+
+---
+
+
+| Maatregel | OWASP 2025 Categorie |
+| --- | --- |
+| **SQL Injection Prevention** | A05:2025 - Injection |
+| **MFA & Secure Flows** | A07:2025 - Authentication Failures |
+| **INSZ Encryptie** | A04:2025 - Cryptographic Failures |
+| **Rate Limiting** | A02:2025 - Security Misconfiguration (DoS prevention) |
+| **Input Validation** | A05:2025 - Injection & A06:2025 - Insecure Design |
+| **Error Handling (geen lekken)** | A10:2025 - Mishandling of Exceptional Conditions |
+| **Serilog / OpenTelemetry** | A09:2025 - Security Logging and Alerting Failures |
+
 
 ## Data Engineering Highlights
 
