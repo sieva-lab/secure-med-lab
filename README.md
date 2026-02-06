@@ -13,6 +13,10 @@ It simulates a healthcare data platform that solves the complex challenge of sim
 
 The platform combines operational systems (OLTP) for patient care with analytical systems (OLAP) for business intelligence, using modern architectural patterns, security-first design, and data engineering best practices.
 
+## Credits
+Sandbox of Tim Deschryver: https://github.com/timdeschryver/Sandbox/tree/main
+
+
 ## Why SecureMed?
 
 - **Real-world complexity**: Demonstrates handling healthcare workflows with regulatory requirements

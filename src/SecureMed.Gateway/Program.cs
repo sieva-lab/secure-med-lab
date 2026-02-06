@@ -1,36 +1,57 @@
+using Duende.AccessTokenManagement.OpenIdConnect;
+using SecureMed.Gateway;
+using SecureMed.Gateway.UserModule;
+using SecureMed.ServiceDefaults;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-builder.Services.AddHealthChecks();
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.AddServerHeader = false;
+});
+
+builder.AddServiceDefaults();
+builder.AddAuthenticationSchemes();
+builder.AddRateLimiting();
+builder.AddReverseProxy();
+
+builder.Services.AddDistributedMemoryCache();
+
+// OpenID Connect access token management
+// This is used to acquire and manage access tokens for the authenticated user
+builder.Services.AddOpenIdConnectAccessTokenManagement();
+
+// Antiforgery configuration
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "X-XSRF-TOKEN";
+    // Set SameSite attributes for the antiforgery cookie
+    // Strict is used here since the gateway and backend APIs are assumed to be on the same site
+    options.Cookie.SameSite = SameSiteMode.Strict;
+});
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseStatusCodePages();
+app.UseExceptionHandler();
 
-app.UseHttpsRedirection();
-app.MapHealthChecks("/health");
+//  Antiforgery middleware has to be placed before authentication middleware
+app.UseAntiforgery();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthentication();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  summaries[1];
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// Rate limiting middleware to limit requests based on user identity or IP address
+app.UseRateLimiter();
+app.UseAuthorization();
+
+// Reverse proxy middleware
+app.MapGroup("bff")
+    .MapUserEndpoints();
+
+// Map reverse proxy routes
+app.MapReverseProxy();
+
+app.MapDefaultEndpoints();
 
 app.Run();
-
-sealed record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
