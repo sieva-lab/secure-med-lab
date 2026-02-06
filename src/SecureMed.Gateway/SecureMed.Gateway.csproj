@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SecureMed.ServiceDefaults\SecureMed.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\SecureMed.SharedKernel\SecureMed.SharedKernel.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi"  />
+    <PackageReference Include="Aspire.Keycloak.Authentication" />
+    <PackageReference Include="Duende.AccessTokenManagement.OpenIdConnect" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+    <PackageReference Include="Yarp.ReverseProxy" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,6 @@
+@SecureMed.Modules.PatientCare.Tests.Integration_HostAddress = http://localhost:5094
+
+GET {{SecureMed.Modules.PatientCare.Tests.Integration_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

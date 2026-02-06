@@ -29,14 +29,17 @@ public static class ModuleExtensions
 
     private static IModule[] DiscoverModules()
     {
-        return [.. Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-            .Where(filePath => Path.GetFileName(filePath).StartsWith("SecureMed.", StringComparison.Ordinal))
-            .Select(Assembly.LoadFrom)
-            .SelectMany(assembly => assembly.GetTypes()
-                .Where(type => typeof(IModule).IsAssignableFrom(type) &&
-                               type is { IsInterface: false, IsAbstract: false }))
-            .Select(type => (IModule)Activator.CreateInstance(type)!)
-            .ToList()
-            .AsReadOnly()];
+        // Scannen we alleen geladen assemblies die beginnen met SecureMed
+        var modules = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(a => a.FullName != null && a.FullName.StartsWith("SecureMed.", StringComparison.Ordinal))
+            .SelectMany(a => a.GetTypes())
+            .Where(t => typeof(IModule).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+            // Filter op unieke naam zodat we nooit dezelfde module 2x laden
+            .GroupBy(t => t.FullName)
+            .Select(g => g.First())
+            .Select(t => (IModule)Activator.CreateInstance(t)!)
+            .ToArray();
+
+        return modules;
     }
 }

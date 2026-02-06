@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SecureMed.SharedKernel.Infrastructure;
 
-internal static class Extensions
+internal static class EfExtensions
 {
     public static void ApplyStronglyTypedIdEfConvertersFromAssembly(this ModelConfigurationBuilder configurationBuilder, Assembly assembly)
     {
