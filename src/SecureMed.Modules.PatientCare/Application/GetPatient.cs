@@ -33,9 +33,10 @@ public static class GetPatient
     {
         ArgumentNullException.ThrowIfNull(parameters);
 
-        // We projecteren direct naar de Response record (leest alleen wat nodig is uit DB)
+        // Filter by id in the database, then project to the Response record
         var patient = await patients
             .AsNoTracking()
+            .Where(p => p.Id == parameters.PatientId)
             .Select(p => new Response(
                 p.Id,
                 p.Name.FirstName,
@@ -43,7 +44,7 @@ public static class GetPatient
                 p.Insz,
                 p.CreatedAt
             ))
-            .SingleOrDefaultAsync(p => p.Id == parameters.PatientId, cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
 
         return patient switch
         {

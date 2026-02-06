@@ -41,7 +41,7 @@ internal static class Extensions
             {
                 openApi.AddDocumentTransformer((document, _, _) =>
                 {
-                    document.Servers = [new OpenApiServer { Url = "https://localhost:7333" }];
+                    document.Servers = [new OpenApiServer { Url = "https://localhost:7141" }];
                     document.Info = new OpenApiInfo
                     {
                         Title = "SecureMed API Reference",
