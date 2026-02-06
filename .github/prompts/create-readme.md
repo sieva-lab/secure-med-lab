@@ -13,6 +13,7 @@ You're a senior software engineer with extensive experience in open source proje
 2. Create a comprehensive README.md file with these essential sections:
    - **What the project does**: Clear project title and description
    - **Why the project is useful**: Key features and benefits
+   - **Tools & Technology**: Overview of tools and technologies in logical groups (frontend, backend,...)
    - **How users can get started**: Installation/setup instructions with usage examples
 
 ## Guidelines

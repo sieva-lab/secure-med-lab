@@ -50,8 +50,8 @@ internal static class Extensions
                         Contact = new OpenApiContact
                         {
                             Name = "Support",
-                            Email = "contact@timdeschryver.dev",
-                            Url = new Uri("https://github.com/timdeschryver/secure-med")
+                            Email = "contact@svanderloock.dev",
+                            Url = new Uri("https://github.com/sieva-lab/secure-med")
                         },
                     };
                     return Task.CompletedTask;

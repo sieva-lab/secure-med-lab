@@ -5,14 +5,14 @@
     "description": "This is a sample API for the SecureMed project.",
     "contact": {
       "name": "Support",
-      "url": "https://github.com/timdeschryver/secure-med",
-      "email": "contact@timdeschryver.dev"
+      "url": "https://github.com/sieva-lab/secure-med",
+      "email": "contact@svanderloock.dev"
     },
     "version": "v1"
   },
   "servers": [
     {
-      "url": "https://localhost:7333"
+      "url": "https://localhost:7141"
     }
   ],
   "paths": {
@@ -49,11 +49,121 @@
             "description": "Not Found"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Patient Care"
+        ],
+        "summary": "Remove a patient (Soft Delete).\r\nThe ISoftDelete interceptor ensures that the patient is not physically deleted,\r\nbut marked as deleted.",
+        "description": "Soft delete a patient from the system",
+        "operationId": "DeletePatient",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PatientId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/patients": {
+      "post": {
+        "tags": [
+          "Patient Care"
+        ],
+        "description": "Register a new patient into the system",
+        "operationId": "RegisterPatient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Command"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Patient Care"
+        ],
+        "summary": "Zoek patiënten op basis van criteria. Momenteel ondersteunt dit\r\nde blind index lookup via INSZ.",
+        "description": "Search for patients based on criteria ",
+        "operationId": "SearchPatient",
+        "parameters": [
+          {
+            "name": "Insz",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
+      "Command": {
+        "required": [
+          "firstName",
+          "lastName",
+          "insz"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "insz": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "PatientId": { },
       "Response": {
         "required": [
