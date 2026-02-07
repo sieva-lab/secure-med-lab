@@ -8,8 +8,9 @@
   <ItemGroup>
           <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
           <PackageReference Include="Microsoft.Kiota.Bundle" />
-          <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
-          <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+          <!-- Removed legacy Microsoft.Testing.Extensions packages (VSTest MSBuild targets) which
+            are not supported on .NET 10. Use the built-in 'dotnet test' experience and external
+            reporting tools if needed. -->
           <PackageReference Include="Testcontainers.PostgreSql" />
           <PackageReference Include="Testcontainers.Redis" />
           <PackageReference Include="TUnit" />

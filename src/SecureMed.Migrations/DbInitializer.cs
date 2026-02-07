@@ -28,9 +28,8 @@ internal partial class DbInitializer(IServiceProvider serviceProvider, ILogger<D
         var sw = Stopwatch.StartNew();
 
         var strategy = dbContext.Database.CreateExecutionStrategy();
-        //Todo: after database schema is more or less stable, we can enable migrations again
-        // await strategy.ExecuteAsync(dbContext.Database.MigrateAsync, cancellationToken);
-        await strategy.ExecuteAsync(dbContext.Database.EnsureCreatedAsync, cancellationToken);
+        // Use migrations to ensure the database schema matches the migrations in SecureMed.Migrations
+        await strategy.ExecuteAsync(dbContext.Database.MigrateAsync, cancellationToken);
 
 
         await SeedAsync(dbContext, cancellationToken);
