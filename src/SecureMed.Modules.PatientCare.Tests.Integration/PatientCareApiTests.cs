@@ -5,7 +5,7 @@ using SecureMed.SharedKernel.StronglyTypedIds;
 
 namespace SecureMed.Modules.PatientCare.IntegrationTests;
 
-[ClassDataSource<PatientCareWebApplicationFactory>(Shared = SharedType.None)]
+[ClassDataSource<PatientCareWebApplicationFactory>(Shared = SharedType.PerClass)]
 public class PatientCareApiTests
 {
     private readonly PatientCareWebApplicationFactory _webAppFactory;
@@ -13,10 +13,11 @@ public class PatientCareApiTests
     {
         _webAppFactory = webAppFactory;
         VerifierSettings.ScrubMember("Id");
+         VerifierSettings.ScrubMember("CreatedAt");
     }
 
     [Test]
-    public async Task RegiserPatient_WithValidData_Returns_CreatedResponse()
+    public async Task RegisterPatient_WithValidData_Returns_CreatedResponse()
     {
         var apiClient = _webAppFactory.CreateApiClient();
 
@@ -31,7 +32,7 @@ public class PatientCareApiTests
     }
 
     [Test]
-    public async Task RegiserPatient_WithMinimalData_Returns_CreatedResponse()
+    public async Task RegisterPatient_WithMinimalData_Returns_CreatedResponse()
     {
         var apiClient = _webAppFactory.CreateApiClient();
 
@@ -46,7 +47,7 @@ public class PatientCareApiTests
     }
 
     [Test]
-    public async Task RegiserPatient_WithInvalidData_Returns_BadRequestProblemDetails()
+    public async Task RegisterPatient_WithInvalidData_Returns_BadRequestProblemDetails()
     {
         var apiClient = _webAppFactory.CreateApiClient();
 
@@ -69,7 +70,7 @@ public class PatientCareApiTests
     }
 
     [Test]
-    public async Task RegiserPatient_WithUnknownProperty_Returns_BadRequestProblemDetails()
+    public async Task RegisterPatient_WithUnknownProperty_Returns_BadRequestProblemDetails()
     {
         using var client = _webAppFactory.CreateClient();
 
@@ -122,7 +123,7 @@ public class PatientCareApiTests
         var createResponse = await apiClient.Patients.PostAsync(new ApiServiceSDK.Models.Command()
         {
             FirstName = "Individual",
-            LastName = "Customer",
+            LastName = "Patient",
             Insz = "12345678901"
         });
         var patientId = (string)createResponse!.GetType().GetField("_value", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(createResponse)!;
@@ -130,7 +131,7 @@ public class PatientCareApiTests
         var patient = await apiClient.Patients[patientId!.ToString()].GetAsync();
         await Assert.That(patient).IsNotNull();
         await Assert.That(patient!.FirstName).IsEqualTo("Individual");
-        await Assert.That(patient.LastName).IsEqualTo("Customer");
+        await Assert.That(patient.LastName).IsEqualTo("Patient");
 
         await Verify(patient);
     }
@@ -162,7 +163,7 @@ public class PatientCareApiTests
         {
             FirstName = "Jane",
             LastName = "Smith",
-            Insz = null
+            Insz = "12345678901"
         });
         var patientId = (string)createResponse!.GetType().GetField("_value", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(createResponse)!;
 

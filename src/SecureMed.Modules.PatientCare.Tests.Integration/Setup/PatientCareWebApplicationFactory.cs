@@ -1,5 +1,6 @@
 extern alias migrations;
 
+using System.Collections.Concurrent;
 using ApiServiceSDK;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -17,24 +18,33 @@ public class PatientCareWebApplicationFactory : WebApplicationFactory<Program>, 
 {
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder("postgres:17.6").Build();
     private readonly RedisContainer _redisContainer = new RedisBuilder("redis:7.0").Build();
-
+// Track adapters om ze later netjes op te ruimen
+    private readonly ConcurrentBag<HttpClientRequestAdapter> _adapters = new();
     public async Task InitializeAsync()
     {
-        await _postgreSqlContainer.StartAsync();
-        await _redisContainer.StartAsync();
+// Start containers parallel voor snelheid
+        await Task.WhenAll(_postgreSqlContainer.StartAsync(), _redisContainer.StartAsync());
 
+        // Forceer server start
         _ = Server;
 
         using var scope = Server.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<PatientCareDbContext>();
-        await dbContext.Database.MigrateAsync();
+        await dbContext.Database.MigrateAsync().WaitAsync(TimeSpan.FromSeconds(30));
     }
 
     public override async ValueTask DisposeAsync()
     {
+        // Ruim eerst de adapters op
+        foreach (var adapter in _adapters)
+        {
+            adapter.Dispose();
+        }
+
         await base.DisposeAsync();
         await _postgreSqlContainer.DisposeAsync();
         await _redisContainer.DisposeAsync();
+
         GC.SuppressFinalize(this);
     }
 
@@ -66,7 +76,11 @@ public class PatientCareWebApplicationFactory : WebApplicationFactory<Program>, 
     {
         var client = CreateClient();
         var authProvider = new AnonymousAuthenticationProvider();
-        using var adapter = new HttpClientRequestAdapter(authProvider, httpClient: client);
+       // Maak de adapter aan zonder 'using'
+        var adapter = new HttpClientRequestAdapter(authProvider, httpClient: client);
+
+        // Houd hem bij voor de dispose fase
+        _adapters.Add(adapter);
         return new ApiClient(adapter);
     }
 }

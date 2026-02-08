@@ -1,5 +1,5 @@
 ﻿{
-  CreatedAt: DateTimeOffset_1,
+  CreatedAt: {Scrubbed},
   FirstName: Individual,
   Id: {Scrubbed},
   Insz: 12345678901,
