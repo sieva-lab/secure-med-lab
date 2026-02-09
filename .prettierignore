@@ -1,0 +1,8 @@
+node_modules
+.angular
+build
+coverage
+*-lock.yaml
+*-lock.json
+test-results
+**/documentation/*.json

@@ -1,0 +1,33 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"outDir": "./dist/out-tsc",
+		"esModuleInterop": true,
+    "types": ["node"],
+		"strict": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"verbatimModuleSyntax": true,
+		"target": "ES2022",
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"baseUrl": "./",
+		"paths": {
+			"@securemed-app/*": ["projects/securemed-app/src/app/*"],
+			"@opentelemetry": ["projects/opentelemetry-lib/src/public-api"],
+			"@form-validation": ["projects/form-validation-lib/src/public-api"]
+		}
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
+	}
+}

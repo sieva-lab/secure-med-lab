@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-// var openIDConnectSettingsClientSecret = builder.AddParameter("OpenIDConnectSettingsClientSecret", secret: true);
+//var openIDConnectSettingsClientSecret = builder.AddParameter("OpenIDConnectSettingsClientSecret", secret: true);
 // var keycloakAdminUsername = builder.AddParameter("KeycloakAdminUsername");
 // var keycloakAdminPassword = builder.AddParameter("KeycloakAdminPassword", secret: true);
 var encryptionKey = builder.AddParameter("EncryptionKey", secret: true);
@@ -162,29 +162,29 @@ var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
         //context.Urls.Add(new() { Url = "/api-docs", DisplayText = "OpenAPI Specification", Endpoint = context.GetEndpoint("https") });
     });
 
-// var angularApplication = builder
-//     .AddJavaScriptApp("angular-frontend", "../Sandbox.AngularWorkspace", runScriptName: "start")
-//     .WithPnpm(install: true, installArgs: ["--frozen-lockfile"])
-//     .WithRunScript("start")
-//     .WithHttpEndpoint(env: "PORT")
-//     .WithEnvironment("APPLICATION", "sandbox-app")
-//     .WithUrlForEndpoint("http", url =>
-//     {
-//         url.DisplayLocation = UrlDisplayLocation.DetailsOnly;
-//     })
-//     .PublishAsDockerFile(configure: resource =>
-//     {
-//         resource.WithDockerfile("../", stage: "sandbox-app");
-//     });
+var angularApplication = builder
+    .AddJavaScriptApp("angular-frontend", "../SecureMed.AngularWorkspace", runScriptName: "start")
+    .WithPnpm(install: true, installArgs: ["--frozen-lockfile"])
+    .WithRunScript("start")
+    .WithHttpEndpoint(env: "PORT")
+    .WithEnvironment("APPLICATION", "securemed-app")
+    .WithUrlForEndpoint("http", url =>
+    {
+        url.DisplayLocation = UrlDisplayLocation.DetailsOnly;
+    })
+    .PublishAsDockerFile(configure: resource =>
+    {
+        resource.WithDockerfile("../", stage: "securemed-app");
+    });
 
 var gateway = builder.AddProject<Projects.SecureMed_Gateway>("gateway")
     .WithReference(apiService)
-    // .WithReference(angularApplication)
+    .WithReference(angularApplication)
     // .WithReference(openTelemetryCollector.Resource.HTTPEndpoint)
     // .WithReference(keycloak)
     // .WithEnvironment("OpenIDConnectSettings__ClientSecret", openIDConnectSettingsClientSecret)
     .WaitFor(apiService)
-    // .WaitFor(angularApplication)
+    .WaitFor(angularApplication)
     // .WaitFor(openTelemetryCollector)
     // .WaitFor(keycloak)
     .WithUrls(context =>
@@ -195,7 +195,7 @@ var gateway = builder.AddProject<Projects.SecureMed_Gateway>("gateway")
     .WithExternalHttpEndpoints();
 
     apiService.WithParentRelationship(gateway);
-// angularApplication.WithParentRelationship(gateway);
+    angularApplication.WithParentRelationship(gateway);
 // keycloak.WithParentRelationship(gateway);
 
 // if (builder.Environment.IsDevelopment())

@@ -59,7 +59,7 @@ public class PatientCareModule : IModule
 
         // 5. Endpoint Routing (Vertical Slices)
         var group = app.MapGroup("patients")
-          //  .RequireAuthorization() // HIPAA/GDPR eis
+            .RequireAuthorization() // HIPAA/GDPR eis
             .WithTags("Patient Care");
 
         group.MapGet("{patientId}", GetPatient.Query)

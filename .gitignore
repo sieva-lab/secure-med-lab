@@ -20,16 +20,19 @@ src/SecureMed.AppHost/obj/
 ########################################
 ## Angular / Node.js
 ########################################
-src/SecureMed.Portal/node_modules/
-src/SecureMed.Portal/dist/
-src/SecureMed.Portal/.angular/
-src/SecureMed.Portal/www/
+src/SecureMed.AngularWorkspace/node_modules/
+src/SecureMed.AngularWorkspace/dist/
+src/SecureMed.AngularWorkspace/.angular/
+src/SecureMed.AngularWorkspace/www/
 .npm/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .eslintcache
 .nbtmp/
+.angular/
+node_modules/
+
 ########################################
 ## Python / dbt / Airflow
 ########################################
@@ -71,3 +74,4 @@ desktop.ini
 *.swp
 *.bak
 map_to_ignore/
+
