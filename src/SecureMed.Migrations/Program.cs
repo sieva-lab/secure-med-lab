@@ -25,14 +25,13 @@ builder.Services.AddOpenTelemetry()
 
 builder.Services.AddEncryptionServices(builder.Configuration);
 
-// REGISTREER JOUW DB CONTEXT
+
 builder.Services.AddDbContext<PatientCareDbContext>(options =>
 {
-    // Zorg dat "patientcare-db" matcht met de naam in je AppHost!
+
     options.UseNpgsql(builder.Configuration.GetConnectionString("securemed-db"), optionsBuilder =>
     {
         optionsBuilder.EnableRetryOnFailure();
-        // Vertel EF dat de migratie-bestanden (als je ze ooit maakt) in DIT project staan
         optionsBuilder.MigrationsAssembly(typeof(DbInitializer).Assembly.GetName().Name);
     });
 });

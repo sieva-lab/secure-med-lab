@@ -107,6 +107,7 @@ var encryptionKey = builder.AddParameter("EncryptionKey", secret: true);
 //     .WithEnvironment("LOKI_ENDPOINT", $"{loki.GetEndpoint("http")}/otlp")
 //     .WithEnvironment("TEMPO_URL", $"{tempo.GetEndpoint("otlp")}");
 
+
 var postgres = builder.AddPostgres("postgres")
     .WithDataVolume();
 postgres
@@ -151,7 +152,7 @@ var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
     // .WithReference(keycloak)
     .WithReference(redis)
     .WaitFor(database)
-    // .WaitFor(migrations)
+    .WaitFor(migrations)
     // .WaitFor(keycloak)
     .WaitFor(redis)
     .WithUrls(context =>

@@ -41,7 +41,7 @@ internal static class Extensions
             {
                 openApi.AddDocumentTransformer((document, _, _) =>
                 {
-                    document.Servers = [new OpenApiServer { Url = "https://localhost:7333" }];
+                    document.Servers = [new OpenApiServer { Url = "https://localhost:7141" }];
                     document.Info = new OpenApiInfo
                     {
                         Title = "SecureMed API Reference",
@@ -50,8 +50,8 @@ internal static class Extensions
                         Contact = new OpenApiContact
                         {
                             Name = "Support",
-                            Email = "contact@timdeschryver.dev",
-                            Url = new Uri("https://github.com/timdeschryver/secure-med")
+                            Email = "contact@svanderloock.dev",
+                            Url = new Uri("https://github.com/sieva-lab/secure-med")
                         },
                     };
                     return Task.CompletedTask;

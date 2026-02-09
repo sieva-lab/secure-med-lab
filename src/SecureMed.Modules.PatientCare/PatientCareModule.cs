@@ -21,6 +21,8 @@ public class PatientCareModule : IModule
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        builder.Services.AddValidation();
+
         // 1. JSON Configuratie (Strict)
         builder.Services.ConfigureHttpJsonOptions(options =>
         {
@@ -64,13 +66,16 @@ public class PatientCareModule : IModule
             .WithName("GetPatient")
             .WithDescription("Get a specific patient by ID");
 
-        // group.MapPost("", RegisterPatient.Handle)
-        //     .WithName("RegisterPatient")
-        //     .WithDescription("Register a new patient into the system");
+        group.MapPost("", RegisterPatient.Handle)
+            .WithName("RegisterPatient")
+            .WithDescription("Register a new patient into the system");
+        group.MapGet("", SearchPatient.Query)
+        .WithName("SearchPatient")
+            .WithDescription("Search for patients based on criteria ");
 
-
-        // group.MapGet("", GetPatients.Query);
-        // group.MapDelete("{patientId}", DeletePatient.Handle);
+        group.MapDelete("{patientId}", DeletePatient.Handle)
+            .WithName("DeletePatient")
+            .WithDescription("Soft delete a patient from the system");
 
         return app;
     }
