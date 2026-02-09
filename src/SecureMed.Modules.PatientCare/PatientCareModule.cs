@@ -21,6 +21,8 @@ public class PatientCareModule : IModule
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        builder.Services.AddValidation();
+
         // 1. JSON Configuratie (Strict)
         builder.Services.ConfigureHttpJsonOptions(options =>
         {
@@ -67,7 +69,6 @@ public class PatientCareModule : IModule
         group.MapPost("", RegisterPatient.Handle)
             .WithName("RegisterPatient")
             .WithDescription("Register a new patient into the system");
-
         group.MapGet("", SearchPatient.Query)
         .WithName("SearchPatient")
             .WithDescription("Search for patients based on criteria ");

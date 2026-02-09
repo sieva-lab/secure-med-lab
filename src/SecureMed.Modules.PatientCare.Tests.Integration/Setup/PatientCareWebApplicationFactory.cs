@@ -22,15 +22,17 @@ public class PatientCareWebApplicationFactory : WebApplicationFactory<Program>, 
     private readonly ConcurrentBag<HttpClientRequestAdapter> _adapters = new();
     public async Task InitializeAsync()
     {
-// Start containers parallel voor snelheid
+        // Start containers parallel voor snelheid
         await Task.WhenAll(_postgreSqlContainer.StartAsync(), _redisContainer.StartAsync());
 
         // Forceer server start
-        _ = Server;
+        var client = CreateClient();
 
         using var scope = Server.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<PatientCareDbContext>();
-        await dbContext.Database.MigrateAsync().WaitAsync(TimeSpan.FromSeconds(30));
+
+        dbContext.Database.SetCommandTimeout(TimeSpan.FromSeconds(60));
+        await dbContext.Database.MigrateAsync();
     }
 
     public override async ValueTask DisposeAsync()
@@ -75,8 +77,9 @@ public class PatientCareWebApplicationFactory : WebApplicationFactory<Program>, 
     public ApiClient CreateApiClient()
     {
         var client = CreateClient();
+        client.Timeout = TimeSpan.FromSeconds(60); // Voorkomt 'The client aborted the request'
+
         var authProvider = new AnonymousAuthenticationProvider();
-       // Maak de adapter aan zonder 'using'
         var adapter = new HttpClientRequestAdapter(authProvider, httpClient: client);
 
         // Houd hem bij voor de dispose fase

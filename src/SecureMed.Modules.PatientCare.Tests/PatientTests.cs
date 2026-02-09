@@ -14,7 +14,7 @@ public sealed class PatientTests
         // Arrange
         var firstName = "Marc";
         var lastName = "Van Ranst";
-        var insz = "84010112345";
+        var insz = "84010112366";
 
         // Act
         var patient = Patient.Create(firstName, lastName, insz);
@@ -30,7 +30,7 @@ public sealed class PatientTests
     [Test]
     public async Task Patient_FullName_ToString_is_formatted_correctly()
     {
-        var patient = Patient.Create("Marc", "Van Ranst", "84010112345");
+        var patient = Patient.Create("Marc", "Van Ranst", "84010112366");
 
         await Assert.That(patient.Name.ToString()).IsEqualTo("Marc Van Ranst");
     }
@@ -39,7 +39,7 @@ public sealed class PatientTests
     public async Task Patient_is_soft_deleted_sets_deleted_at_timestamp()
     {
         // Arrange
-        var patient = Patient.Create("Marc", "Van Ranst", "84010112345");
+        var patient = Patient.Create("Marc", "Van Ranst", "84010112366");
         var fakeTime = new FakeTimeProvider();
         var now = new DateTimeOffset(2026, 2, 5, 10, 0, 0, TimeSpan.Zero);
         fakeTime.SetUtcNow(now);

@@ -25,7 +25,7 @@ public class PatientCareApiTests
         {
             FirstName = "John",
             LastName = "Doe",
-            Insz = "12345678901",
+            Insz = "12345678958",
         });
 
         await Assert.That(response).IsNotNull();
@@ -40,35 +40,31 @@ public class PatientCareApiTests
         {
             FirstName = "Jane",
             LastName = "Smith",
-            Insz = "12345678901"
+            Insz = "12345678859"
         });
 
         await Assert.That(response).IsNotNull();
     }
 
-    [Test]
-    public async Task RegisterPatient_WithInvalidData_Returns_BadRequestProblemDetails()
+[Test]
+public async Task RegisterPatient_WithInvalidData_Returns_BadRequest()
+{
+    var apiClient = _webAppFactory.CreateApiClient();
+
+
+    var apiException = await Assert.That(async () =>
     {
-        var apiClient = _webAppFactory.CreateApiClient();
-
-        try
+        await apiClient.Patients.PostAsync(new ApiServiceSDK.Models.Command()
         {
-            await apiClient.Patients.PostAsync(new ApiServiceSDK.Models.Command()
-            {
-                FirstName = "A",
-                LastName = "B",
-                Insz = "123"
-            });
+            FirstName = "A",
+            LastName = "B",
+            Insz = "123"
+        });
+    }).Throws<Microsoft.Kiota.Abstractions.ApiException>();
 
 
-            Assert.Fail("Expected ApiException was not thrown");
-        }
-        catch (Microsoft.Kiota.Abstractions.ApiException ex)
-        {
-            await Assert.That(ex.ResponseStatusCode).IsEqualTo(400);
-        }
-    }
-
+    await Assert.That(apiException!.ResponseStatusCode).IsEqualTo(400);
+}
     [Test]
     public async Task RegisterPatient_WithUnknownProperty_Returns_BadRequestProblemDetails()
     {
@@ -90,31 +86,6 @@ public class PatientCareApiTests
         await Assert.That(problemDetails).IsNotNull();
     }
 
-    // [Test]
-    // public async Task GetPatients_Returns_OkWithPatientsList()
-    // {
-    //     var apiClient = _webAppFactory.CreateApiClient();
-
-    //     await apiClient.Patients.PostAsync(new ApiServiceSDK.Models.Command()
-    //     {
-    //         FirstName = "Test",
-    //         LastName = "User",
-    //         Insz = "12345678901"
-    //     });
-    //     await apiClient.Patients.PostAsync(new ApiServiceSDK.Models.Command()
-    //     {
-    //         FirstName = "Test 2",
-    //         LastName = "User 2",
-    //         Insz = "12345678902"
-    //     });
-
-    //     var patients = await apiClient.Patients.GetAsync();
-    //     await Assert.That(patients).IsNotNull();
-    //     await Assert.That(patients.Count).IsGreaterThanOrEqualTo(2);
-
-    //     await Verify(patients.OrderBy(c => c.FirstName).ThenBy(c => c.LastName));
-    // }
-
     [Test]
     public async Task GetPatient_WithValidId_Returns_OkWithPatient()
     {
@@ -124,7 +95,7 @@ public class PatientCareApiTests
         {
             FirstName = "Individual",
             LastName = "Patient",
-            Insz = "12345678901"
+            Insz = "12345678760"
         });
         var patientId = (string)createResponse!.GetType().GetField("_value", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(createResponse)!;
 
@@ -163,7 +134,7 @@ public class PatientCareApiTests
         {
             FirstName = "Jane",
             LastName = "Smith",
-            Insz = "12345678901"
+            Insz = "12345678661"
         });
         var patientId = (string)createResponse!.GetType().GetField("_value", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(createResponse)!;
 
