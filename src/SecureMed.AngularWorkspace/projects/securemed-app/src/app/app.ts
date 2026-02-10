@@ -1,12 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import Header from './core/header/header';
+
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet],
+  selector: 'securemed-root',
+  imports: [RouterOutlet, Header],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-  protected readonly title = signal('securemed-app');
-}
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
+ export class App {}

@@ -158,10 +158,9 @@ dotnet test
 # Start API service
 dotnet run --project src/SecureMed.ApiService
 
-# In separate terminal, start frontend
-cd src/SecureMed.Portal
-npm install
-npm start
+# In separate terminal, start frontend from root
+pnpm install
+pnpm --filter securemed-app build
 ```
 
 For detailed setup instructions, see [docs/SETUP.md](docs/SETUP.md) (if available).
@@ -200,11 +199,7 @@ secure-med-lab/
 │   ├── SecureMed.API.Tests/            # API unit tests
 │   ├── SecureMed.Domain.Tests/         # Domain tests
 │   └── SecureMed.Integration.Tests/    # Integration tests
-├── docs/
-├── docker/
-├── scripts/
-│   └── setup scripts for local development
-└── docker-compose.yml
+└── docs
 ```
 
 ## Key Features

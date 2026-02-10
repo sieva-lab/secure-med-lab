@@ -1,11 +1,38 @@
-import { type ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
+import {
+	type ApplicationConfig,
+	provideBrowserGlobalErrorListeners,
+	provideZonelessChangeDetection,
+} from '@angular/core';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { provideHttpClient, withFetch, withXsrfConfiguration } from '@angular/common/http';
+import { routes } from '@securemed-app/app.routes';
+import { provideOpenTelemetryInstrumentation } from '@opentelemetry';
+import { provideEventPlugins } from './shared/event-managers';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ]
+	providers: [
+		provideBrowserGlobalErrorListeners(),
+		provideZonelessChangeDetection(),
+		provideRouter(
+			routes,
+			withComponentInputBinding(),
+			withInMemoryScrolling({
+				scrollPositionRestoration: 'enabled',
+			}),
+		),
+		provideHttpClient(
+			withXsrfConfiguration({
+				cookieName: '__SecureMed-X-XSRF-TOKEN',
+				headerName: 'X-XSRF-TOKEN',
+			}),
+			withFetch(),
+		),
+		{
+			provide: DATE_PIPE_DEFAULT_OPTIONS,
+			useValue: { dateFormat: 'dd-MMM-yyyy' },
+		},
+		provideEventPlugins(),
+		provideOpenTelemetryInstrumentation(),
+	],
 };

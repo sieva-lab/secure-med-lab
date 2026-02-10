@@ -4,18 +4,18 @@ using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-//var openIDConnectSettingsClientSecret = builder.AddParameter("OpenIDConnectSettingsClientSecret", secret: true);
-// var keycloakAdminUsername = builder.AddParameter("KeycloakAdminUsername");
-// var keycloakAdminPassword = builder.AddParameter("KeycloakAdminPassword", secret: true);
+var openIDConnectSettingsClientSecret = builder.AddParameter("OpenIDConnectSettingsClientSecret", secret: true);
+var keycloakAdminUsername = builder.AddParameter("KeycloakAdminUsername");
+var keycloakAdminPassword = builder.AddParameter("KeycloakAdminPassword", secret: true);
 var encryptionKey = builder.AddParameter("EncryptionKey", secret: true);
 
-// var keycloak = builder.AddKeycloak("keycloak", adminUsername: keycloakAdminUsername, adminPassword: keycloakAdminPassword)
-//     .WithDataVolume()
-//     .WithOtlpExporter()
-//     .WithRealmImport("../config/keycloak/realms");
-// openIDConnectSettingsClientSecret.WithParentRelationship(keycloak);
-// keycloakAdminUsername.WithParentRelationship(keycloak);
-// keycloakAdminPassword.WithParentRelationship(keycloak);
+var keycloak = builder.AddKeycloak("keycloak", adminUsername: keycloakAdminUsername, adminPassword: keycloakAdminPassword)
+    .WithDataVolume()
+    .WithOtlpExporter()
+    .WithRealmImport("../../config/keycloak/realms");
+openIDConnectSettingsClientSecret.WithParentRelationship(keycloak);
+keycloakAdminUsername.WithParentRelationship(keycloak);
+keycloakAdminPassword.WithParentRelationship(keycloak);
 
 // var minioUser = builder.AddParameter("MinioUser", secret: false);
 // var minioPassword = builder.AddParameter("MinioPassword", secret: true);
@@ -149,11 +149,11 @@ var apiService = builder.AddProject<Projects.SecureMed_ApiService>("apiservice")
     .WithHttpHealthCheck("/health")
     .WithEnvironment("Encryption__Key", encryptionKey)
     .WithReference(database)
-    // .WithReference(keycloak)
+    .WithReference(keycloak)
     .WithReference(redis)
     .WaitFor(database)
     .WaitFor(migrations)
-    // .WaitFor(keycloak)
+    .WaitFor(keycloak)
     .WaitFor(redis)
     .WithUrls(context =>
     {
@@ -181,12 +181,13 @@ var gateway = builder.AddProject<Projects.SecureMed_Gateway>("gateway")
     .WithReference(apiService)
     .WithReference(angularApplication)
     // .WithReference(openTelemetryCollector.Resource.HTTPEndpoint)
-    // .WithReference(keycloak)
-    // .WithEnvironment("OpenIDConnectSettings__ClientSecret", openIDConnectSettingsClientSecret)
+    .WithReference(keycloak)
+    .WithEnvironment("OpenIDConnectSettings__ClientSecret", openIDConnectSettingsClientSecret)
+    .WithEnvironment("OpenIDConnectSettings:ClientSecret", openIDConnectSettingsClientSecret)
     .WaitFor(apiService)
     .WaitFor(angularApplication)
     // .WaitFor(openTelemetryCollector)
-    // .WaitFor(keycloak)
+    .WaitFor(keycloak)
     .WithUrls(context =>
     {
         context.Urls.Clear();
@@ -196,7 +197,7 @@ var gateway = builder.AddProject<Projects.SecureMed_Gateway>("gateway")
 
     apiService.WithParentRelationship(gateway);
     angularApplication.WithParentRelationship(gateway);
-// keycloak.WithParentRelationship(gateway);
+    keycloak.WithParentRelationship(gateway);
 
 // if (builder.Environment.IsDevelopment())
 // {

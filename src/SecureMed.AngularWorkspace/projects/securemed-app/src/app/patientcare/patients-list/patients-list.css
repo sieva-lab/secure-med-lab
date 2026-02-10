@@ -1,8 +1,8 @@
-.customers-table {
+.patients-table {
 	width: 100%;
 }
 
-.customer-name {
+.patient-name {
 	font-weight: 500;
 	color: var(--color-text-primary);
 	max-width: 300px;

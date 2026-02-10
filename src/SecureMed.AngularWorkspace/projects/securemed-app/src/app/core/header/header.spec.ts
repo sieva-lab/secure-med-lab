@@ -9,7 +9,7 @@ it('renders anonymous header when user is not authenticated', async () => {
 	await setup({ isAuthenticated: false, name: null });
 
 	expect(screen.getByText('Login')).toBeInTheDocument();
-	expect(screen.getByText('Customers')).toBeInTheDocument();
+	expect(screen.getByText('Patients')).toBeInTheDocument();
 });
 
 it('renders authenticated header when user is authenticated', async () => {
@@ -17,16 +17,16 @@ it('renders authenticated header when user is authenticated', async () => {
 
 	expect(screen.getByText('👋 John Doe')).toBeInTheDocument();
 	expect(screen.getByText('Logout')).toBeInTheDocument();
-	expect(screen.getByText('Customers')).toBeInTheDocument();
+	expect(screen.getByText('Patients')).toBeInTheDocument();
 });
 
 it('has working navigation links', async () => {
 	await setup({ isAuthenticated: true, name: 'John Doe' });
 
-	const customersLink = screen.getByRole('link', { name: 'Customers' });
+	const patientsLink = screen.getByRole('link', { name: 'Patients' });
 	const userLink = screen.getByRole('link', { name: 'Profile' });
 
-	expect(customersLink).toHaveAttribute('href', '/customers');
+	expect(patientsLink).toHaveAttribute('href', '/patients');
 	expect(userLink).toHaveAttribute('href', '/user');
 });
 
