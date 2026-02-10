@@ -1,7 +1,7 @@
 # SecureMed Platform
 
 [![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular)](https://angular.dev/)
+[![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular)](https://angular.dev/)
 [![dbt](https://img.shields.io/badge/dbt-Core-FF694B?logo=dbt)](https://www.getdbt.com/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -32,7 +32,7 @@ The platform separates operational and analytical concerns with dedicated databa
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                  Frontend (Angular 19)                          │
+│                  Frontend (Angular 21)                          │
 └──────────────────────────┬──────────────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────────────┐
@@ -90,7 +90,7 @@ The platform separates operational and analytical concerns with dedicated databa
 
 | Layer | Technologies |
 |-------|--------------|
-| **Frontend** | Angular 19, RxJS, TypeScript (strict mode) |
+| **Frontend** | Angular 21, RxJS, TypeScript (strict mode) |
 | **Backend** | .NET 10, Entity Framework Core, MediatR (CQRS) |
 | **API** | RESTful with OpenAPI/Swagger, Scalar documentation |
 | **Operational DB (OLTP)** | PostgreSQL (optimized for transactional operations) |
@@ -183,6 +183,11 @@ For detailed setup instructions, see [docs/SETUP.md](docs/SETUP.md) (if availabl
 ```
 secure-med-lab/
 ├── src/
+├   ├── SecureMed.AngularWorkspace/     # Angular workspace
+│   └──── projects
+│   │       └── form-validation-lib     # Validation library
+│   │       └── opentelemetry-lib       # Opentelemetry library
+│   │       └── securemed-app           # Angular app
 │   ├── SecureMed.AppHost/              # .NET Aspire orchestration
 │   ├── SecureMed.ApiService/           # Main API service
 │   ├── SecureMed.Gateway/              # API Gateway

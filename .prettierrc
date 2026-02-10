@@ -5,7 +5,7 @@
 	"trailingComma": "all",
 	"overrides": [
 		{
-			"files": "Sandbox.AngularWorkspace/**/*.html",
+			"files": "src/SecureMed.AngularWorkspace/**/*.html",
 			"options": {
 				"parser": "angular"
 			}
