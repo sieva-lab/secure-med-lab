@@ -38,15 +38,7 @@ The platform separates operational and analytical concerns with dedicated databa
 │  PostgreSQL    │  │   Redis    │  │   Auth       │
 │  (OLTP DB)     │  │   Cache    │  │   (OIDC)     │
 │  Operations    │  │            │  │              │
-└────────┬───────┘  └────────────┘  └──────────────┘
-         │
-         │  Extract & Load (EL)
-         │
-┌────────▼─────────────────────────┐
-│   PostgreSQL (OLAP Database)     │
-│   Analytics Database Schema      │
-│   (Bronze Layer - Raw Data)      │
-└──────────────────────────────────┘
+└────────────────┘  └────────────┘  └──────────────┘
 ```
 
 **Operational System (Patient Care) - OLTP**
